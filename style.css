@@ -1,0 +1,38 @@
+h1{
+    text-align: center;
+}
+body{
+    background-position: center;
+}
+#trenerzy{
+    text-align: center;
+    width: 30%;
+    border-radius: 15px;
+    border: solid;
+    border-color:  black;
+    margin: 10px;
+}
+#zawodnicy{
+    text-align: center;
+    width: 30%;
+    border-radius: 15px;
+    border: solid;
+    border-color:  black;
+    margin: 10px;
+}
+#mecze{
+    text-align: center;
+    width: 30%;
+    border-radius: 15px;
+    border: solid;
+    border-color:  black;
+    margin: 10px;
+}
+#contener{
+    display: flex;
+    flex-direction: row;
+    margin-left: auto;
+    margin-right: auto;
+    width: 75em;
+    position: relative
+}
