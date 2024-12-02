@@ -11,22 +11,109 @@
         <h1>Klub Piłkarski ZSTI GLIWICE</h1>
     </header>
 <div id="contener">
-    <div id="trenerzy">
+    <div id="trenerzy"class="clickable" onclick="toggleTable()">
     <h2>Trenerzy</h2>
 </div>
-<div id="zawodnicy">
+<div id="zawodnicy"class="clickable" onclick="toggleTable()">
     <h2>Zawodnicy</h2>
 </div>
-<div id="mecze">
+<div id="mecze"class="clickable" onclick="toggleTable()">
     <h2>Mecze</h2>
 </div>
 </div>
+ <div id="buttonsContainer" class="buttons-container"></div>
+<?php require_once 'cone.php';?>
+<?php
+$sql = "SELECT imie, nazwisko, pozycja, wiek FROM zawodnicy";
+$result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        echo "<table>";
+        echo "<thead><tr><th>Imię</th><th> nazwisko</th><th>Pozycja</th><th>Wiek</th></tr></thead>";
+        echo "<tbody>";
+        while ($row = $result->fetch_assoc()) {
+            echo "<tr>";
+            echo "<td>" . htmlspecialchars($row["imie"]) . "</td>";
+            echo "<td>" . htmlspecialchars($row["nazwisko"]) . "</td>";
+            echo "<td>" . htmlspecialchars($row["pozycja"]) . "</td>";
+            echo "<td>" . htmlspecialchars($row["wiek"]) . "</td>";
+            echo "</tr>";
+        }
+        echo "</tbody>";
+        echo "</table>";
+    } else {
+        echo "<p style='text-align: center;'>Brak danych w tabeli zawodnicy.</p>";
+    } ?>
+    <script>
+
+        document.getElementById('zawodnicy').addEventListener('click', function() {
+            const container = document.getElementById('buttonsContainer');
+            
+    
+            if (container.children.length === 0) {
+              
+                const button1 = document.createElement('button');
+                button1.className = 'button';
+                button1.innerText = 'Wyświetl zawodników i dane';
+
+                const button2 = document.createElement('button');
+                button2.className = 'button';
+                button2.innerText = 'Wyświetl zdobyte bramki przez zawodników';
+
+                const button3 = document.createElement('button');
+                button3.className = 'button';
+                button3.innerText = 'wyświetl zawodników od najstarszego do najmłodszego ';
+                container.appendChild(button1);
+                container.appendChild(button2);
+                container.appendChild(button3);
+            } 
+        });
+        
+        document.getElementById('mecze').addEventListener('click', function() {
+            const container = document.getElementById('buttonsContainer');
+            
+    
+            if (container.children.length === 0) {
+              
+                const button1 = document.createElement('button');
+                button1.className = 'button';
+                button1.innerText = '1';
+
+                const button2 = document.createElement('button');
+                button2.className = 'button';
+                button2.innerText = '2';
+
+                const button3 = document.createElement('button');
+                button3.className = 'button';
+                button3.innerText = '3 ';
+                container.appendChild(button1);
+                container.appendChild(button2);
+                container.appendChild(button3);
+            } 
+        });
+        
+        document.getElementById('trenerzy').addEventListener('click', function() {
+            const container = document.getElementById('buttonsContainer');
+            
+    
+            if (container.children.length === 0) {
+              
+                const button1 = document.createElement('button');
+                button1.className = 'button';
+                button1.innerText = 'Wyświetl list trenerów';
+
+                const button2 = document.createElement('button');
+                button2.className = 'button';
+                button2.innerText = 'Wyświetl specjalizacje trenerów';
+
+                const button3 = document.createElement('button');
+                button3.className = 'button';
+                button3.innerText = 'wyświetl date zatrudnienia trenerów';
+                container.appendChild(button1);
+                container.appendChild(button2);
+                container.appendChild(button3);
+            } 
+        });
+    </script>
 </body>
 </html>
-<?php 
-require_once 'cone.php';
-
-
-
-
-?>
