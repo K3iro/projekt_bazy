@@ -5,31 +5,90 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <title>Document</title>
+    <style>
+     
+    </style>
 </head>
 <body>
     <header>
         <h1>Klub Piłkarski ZSTI GLIWICE</h1>
     </header>
-<div id="contener">
-    <div id="trenerzy"class="clickable" onclick="toggleTable()">
-    <h2>Trenerzy</h2>
-</div>
-<div id="zawodnicy"class="clickable" onclick="toggleTable()">
-    <h2>Zawodnicy</h2>
-</div>
-<div id="mecze"class="clickable" onclick="toggleTable()">
-    <h2>Mecze</h2>
-</div>
-</div>
- <div id="buttonsContainer" class="buttons-container"></div>
-<?php require_once 'cone.php';?>
-<?php
-$sql = "SELECT imie, nazwisko, pozycja, wiek FROM zawodnicy";
-$result = $conn->query($sql);
+    <div id="contener">
+        <div id="trenerzy" class="clickable">
+            <h2>Trenerzy</h2>
+        </div>
+        <div id="zawodnicy" class="clickable">
+            <h2>Zawodnicy</h2>
+        </div>
+        <div id="mecze" class="clickable">
+            <h2>Mecze</h2>
+        </div>
+    </div>
+    <div id="buttonsContainer" class="buttons-container"></div>
+    <?php require_once 'conn.php'; ?>
+    <?php
+    // Tabela: Lista trenerów
+    $sql = "SELECT imie, nazwisko FROM trenerzy";
+    $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
-        echo "<table>";
-        echo "<thead><tr><th>Imię</th><th> nazwisko</th><th>Pozycja</th><th>Wiek</th></tr></thead>";
+        echo "<table id='trenerzyTable'>";
+        echo "<thead><tr><th>Imię</th><th>Nazwisko</th></tr></thead>";
+        echo "<tbody>";
+        while ($row = $result->fetch_assoc()) {
+            echo "<tr>";
+            echo "<td>" . htmlspecialchars($row["imie"]) . "</td>";
+            echo "<td>" . htmlspecialchars($row["nazwisko"]) . "</td>";
+            echo "</tr>";
+        }
+        echo "</tbody>";
+        echo "</table>";
+    }
+
+    // Tabela: Specjalizacje trenerów
+    $sql = "SELECT imie, nazwisko, specjalizacja FROM trenerzy";
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        echo "<table id='trenerzyTableSpecjalizacje'>";
+        echo "<thead><tr><th>Imię</th><th>Nazwisko</th><th>Specjalizacja</th></tr></thead>";
+        echo "<tbody>";
+        while ($row = $result->fetch_assoc()) {
+            echo "<tr>";
+            echo "<td>" . htmlspecialchars($row["imie"]) . "</td>";
+            echo "<td>" . htmlspecialchars($row["nazwisko"]) . "</td>";
+            echo "<td>" . htmlspecialchars($row["specjalizacja"]) . "</td>";
+            echo "</tr>";
+        }
+        echo "</tbody>";
+        echo "</table>";
+    }
+
+    // Tabela: Data zatrudnienia trenerów
+    $sql = "SELECT imie, nazwisko, data_zatrudnienia FROM trenerzy";
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        echo "<table id='trenerzyTableDataZatrudnienia'>";
+        echo "<thead><tr><th>Imię</th><th>Nazwisko</th><th>Data Zatrudnienia</th></tr></thead>";
+        echo "<tbody>";
+        while ($row = $result->fetch_assoc()) {
+            echo "<tr>";
+            echo "<td>" . htmlspecialchars($row["imie"]) . "</td>";
+            echo "<td>" . htmlspecialchars($row["nazwisko"]) . "</td>";
+            echo "<td>" . htmlspecialchars($row["data_zatrudnienia"]) . "</td>";
+            echo "</tr>";
+        }
+        echo "</tbody>";
+        echo "</table>";
+    }
+    //dane
+    $sql = "SELECT imie, nazwisko, pozycja, wiek, numer, ilosc_bramek FROM zawodnicy";
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        echo "<table id='zawodnicyTable'>";
+        echo "<thead><tr><th>Imię</th><th>Nazwisko</th><th>Pozycja</th><th>Wiek</th><th>Numer</th><th>Ilość bramek</th></tr></thead>";
         echo "<tbody>";
         while ($row = $result->fetch_assoc()) {
             echo "<tr>";
@@ -37,83 +96,263 @@ $result = $conn->query($sql);
             echo "<td>" . htmlspecialchars($row["nazwisko"]) . "</td>";
             echo "<td>" . htmlspecialchars($row["pozycja"]) . "</td>";
             echo "<td>" . htmlspecialchars($row["wiek"]) . "</td>";
+            echo "<td>" . htmlspecialchars($row["numer"]) . "</td>";
+            echo "<td>" . htmlspecialchars($row["ilosc_bramek"]) . "</td>";
             echo "</tr>";
         }
         echo "</tbody>";
         echo "</table>";
     } else {
         echo "<p style='text-align: center;'>Brak danych w tabeli zawodnicy.</p>";
-    } ?>
+    }
+
+    // ilopść bramek
+    $sql = "SELECT CONCAT(imie, ' ', nazwisko) AS pelne_imie, ilosc_bramek FROM zawodnicy where zawodnicy.ilosc_bramek > 0";
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        echo "<table id='zawodnicyTableBramki'>";
+        echo "<thead><tr><th>Imię i Nazwisko</th><th>Ilość Bramki</th></tr></thead>";
+        echo "<tbody>";
+        while ($row = $result->fetch_assoc()) {
+            echo "<tr>";
+            echo "<td>" . htmlspecialchars($row["pelne_imie"]) . "</td>";
+            echo "<td>" . htmlspecialchars($row["ilosc_bramek"]) . "</td>";
+            echo "</tr>";
+        }
+        echo "</tbody>";
+        echo "</table>";
+    }
+    
+    $sql = "SELECT zawodnicy.imie, zawodnicy.nazwisko, zawodnicy.wiek FROM zawodnicy ORDER BY zawodnicy.wiek DESC";
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        echo "<table id='zawodnicyTableWiek'>";
+        echo "<thead><tr><th>Imię</th><th>Nazwisko</th><th>Wiek</th></tr></thead>";
+        echo "<tbody>";
+        while ($row = $result->fetch_assoc()) {
+            echo "<tr>";
+            echo "<td>" . htmlspecialchars($row["imie"]) . "</td>";
+            echo "<td>" . htmlspecialchars($row["nazwisko"]) . "</td>";
+            echo "<td>" . htmlspecialchars($row["wiek"]) . "</td>";
+            echo "</tr>";
+        }
+        echo "</tbody>";
+        echo "</table>";
+    } else {
+        echo "<p style='text-align: center;'>Brak danych w tabeli zawodnicy.</p>";
+    }
+    //wiek
+    $sql = "SELECT imie, nazwisko, pozycja, wiek, numer, ilosc_bramek FROM zawodnicy";
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        echo "<table id='zawodnicyTable'>";
+        echo "<thead><tr><th>Imię</th><th>Nazwisko</th><th>Pozycja</th><th>Wiek</th><th>Numer</th><th>Ilość bramek</th></tr></thead>";
+        echo "<tbody>";
+        while ($row = $result->fetch_assoc()) {
+            echo "<tr>";
+            echo "<td>" . htmlspecialchars($row["imie"]) . "</td>";
+            echo "<td>" . htmlspecialchars($row["nazwisko"]) . "</td>";
+            echo "<td>" . htmlspecialchars($row["pozycja"]) . "</td>";
+            echo "<td>" . htmlspecialchars($row["wiek"]) . "</td>";
+            echo "<td>" . htmlspecialchars($row["numer"]) . "</td>";
+            echo "<td>" . htmlspecialchars($row["ilosc_bramek"]) . "</td>";
+            echo "</tr>";
+        }
+        echo "</tbody>";
+        echo "</table>";
+    } else {
+        echo "<p style='text-align: center;'>Brak danych w tabeli zawodnicy.</p>";
+    }
+
+// Ustawienia dla dat
+$month = isset($_POST['month']) ? intval($_POST['month']) : date('n');
+$year = isset($_POST['year']) ? intval($_POST['year']) : date('Y');
+
+// Pierwszy i ostatni dzień miesiąca
+$firstDayOfMonth = strtotime("$year-$month-01");
+$lastDayOfMonth = strtotime("last day of", $firstDayOfMonth);
+
+// Dni tygodnia
+$daysInMonth = date('t', $firstDayOfMonth);
+$firstDayOfWeek = date('w', $firstDayOfMonth); // 0 = Niedziela, 1 = Poniedziałek
+$firstDayOfWeek = $firstDayOfWeek == 0 ? 7 : $firstDayOfWeek; // Przesunięcie dla poniedziałku jako pierwszego dnia
+
+// Pobieranie danych o wynikach meczów z bazy danych
+require_once 'conn.php'; // Łączenie z bazą danych
+
+$sql = "SELECT data_meczu, rezultat FROM mecze WHERE MONTH(data_meczu) = $month AND YEAR(data_meczu) = $year";
+$result = mysqli_query($conn, $sql);
+
+$matchResults = [];
+while ($row = mysqli_fetch_assoc($result)) {
+    $matchResults[$row['data_meczu']] = $row['rezultat']; // Tworzymy tablicę: klucz to data, wartość to wynik
+}
+
+// Generowanie kalendarza
+echo "<div class='calendar'>";
+echo "<table>";
+echo "<thead><tr><th>Pn</th><th>Wt</th><th>Śr</th><th>Czw</th><th>Pt</th><th>Sb</th><th>Nd</th></tr></thead>";
+echo "<tbody><tr>";
+
+// Wypełniamy puste dni przed pierwszym dniem miesiąca
+for ($i = 1; $i < $firstDayOfWeek; $i++) {
+    echo "<td class='empty'></td>";
+}
+
+// Generujemy dni miesiąca
+for ($day = 1; $day <= $daysInMonth; $day++) {
+    $currentDate = sprintf("%04d-%02d-%02d", $year, $month, $day);
+    $class = '';
+
+    // Dodajemy odpowiednią klasę w zależności od wyniku meczu
+    if (isset($matchResults[$currentDate])) {
+        switch ($matchResults[$currentDate]) {
+            case 'wygrana':
+                $class = 'green';
+                break;
+            case 'remis':
+                $class = 'orange';
+                break;
+            case 'przegrana':
+                $class = 'red';
+                break;
+        }
+    }
+
+    // Wyświetlamy dzień z odpowiednią klasą
+    echo "<td class='$class'>$day</td>";
+
+    // Kończymy wiersz w kalendarzu po niedzieli
+    if (($day + $firstDayOfWeek - 1) % 7 == 0 && $day != $daysInMonth) {
+        echo "</tr><tr>";
+    }
+}
+
+// Wypełniamy puste dni po ostatnim dniu miesiąca
+$lastDayOfWeek = ($daysInMonth + $firstDayOfWeek - 1) % 7;
+if ($lastDayOfWeek != 0) {
+    for ($i = $lastDayOfWeek + 1; $i <= 7; $i++) {
+        echo "<td class='empty'></td>";
+    }
+}
+
+echo "</tr></tbody>";
+echo "</table>";
+echo "</div>";
+    ?>
     <script>
-
-        document.getElementById('zawodnicy').addEventListener('click', function() {
+          function clearButtons() {
             const container = document.getElementById('buttonsContainer');
-            
-    
-            if (container.children.length === 0) {
-              
-                const button1 = document.createElement('button');
-                button1.className = 'button';
-                button1.innerText = 'Wyświetl zawodników i dane';
+            container.innerHTML = ''; 
+        }
 
-                const button2 = document.createElement('button');
-                button2.className = 'button';
-                button2.innerText = 'Wyświetl zdobyte bramki przez zawodników';
-
-                const button3 = document.createElement('button');
-                button3.className = 'button';
-                button3.innerText = 'wyświetl zawodników od najstarszego do najmłodszego ';
-                container.appendChild(button1);
-                container.appendChild(button2);
-                container.appendChild(button3);
-            } 
-        });
+        function hideAllTables() {
+            document.getElementById('zawodnicyTable').style.display = 'none';
+            document.getElementById('zawodnicyTableWiek').style.display = 'none';
+            document.getElementById('zawodnicyTableBramki').style.display = 'none';
+            document.getElementById('trenerzyTable').style.display = 'none';
+            document.getElementById('trenerzyTableSpecjalizacje').style.display = 'none';
+            document.getElementById('trenerzyTableDataZatrudnienia').style.display = 'none';
+        }
         
-        document.getElementById('mecze').addEventListener('click', function() {
+//trenerzy
+document.getElementById('trenerzy').addEventListener('click', function () {
+            clearButtons();
             const container = document.getElementById('buttonsContainer');
-            
-    
-            if (container.children.length === 0) {
-              
-                const button1 = document.createElement('button');
-                button1.className = 'button';
-                button1.innerText = '1';
 
-                const button2 = document.createElement('button');
-                button2.className = 'button';
-                button2.innerText = '2';
+            const button1 = document.createElement('button');
+            button1.className = 'button';
+            button1.innerText = 'Wyświetl trenerów';
+            button1.onclick = function () {
+                hideAllTables();
+                const table = document.getElementById('trenerzyTable');
+                table.style.display = 'table';
+            };
 
-                const button3 = document.createElement('button');
-                button3.className = 'button';
-                button3.innerText = '3 ';
-                container.appendChild(button1);
-                container.appendChild(button2);
-                container.appendChild(button3);
-            } 
+            const button2 = document.createElement('button');
+            button2.className = 'button';
+            button2.innerText = 'Wyświetl specjalizacje trenerów';
+            button2.onclick = function () {
+                hideAllTables();
+                const table = document.getElementById('trenerzyTableSpecjalizacje');
+                table.style.display = 'table';
+            };
+
+            const button3 = document.createElement('button');
+            button3.className = 'button';
+            button3.innerText = 'Wyświetl datę zatrudnienia trenerów';
+            button3.onclick = function () {
+                hideAllTables();
+                const table = document.getElementById('trenerzyTableDataZatrudnienia');
+                table.style.display = 'table';
+            };
+
+            container.appendChild(button1);
+            container.appendChild(button2);
+            container.appendChild(button3);
         });
-        
-        document.getElementById('trenerzy').addEventListener('click', function() {
+
+//zawdonicy
+        document.getElementById('zawodnicy').addEventListener('click', function () {
+            clearButtons();
             const container = document.getElementById('buttonsContainer');
-            
-    
-            if (container.children.length === 0) {
-              
-                const button1 = document.createElement('button');
-                button1.className = 'button';
-                button1.innerText = 'Wyświetl list trenerów';
 
-                const button2 = document.createElement('button');
-                button2.className = 'button';
-                button2.innerText = 'Wyświetl specjalizacje trenerów';
+            const button1 = document.createElement('button');
+            button1.className = 'button';
+            button1.innerText = 'Wyświetl zawodników i dane';
+            button1.onclick = function () {
+                hideAllTables();
+                const table = document.getElementById('zawodnicyTable');
+                table.style.display = 'table';
+            };
 
-                const button3 = document.createElement('button');
-                button3.className = 'button';
-                button3.innerText = 'wyświetl date zatrudnienia trenerów';
-                container.appendChild(button1);
-                container.appendChild(button2);
-                container.appendChild(button3);
-            } 
+            const button2 = document.createElement('button');
+            button2.className = 'button';
+            button2.innerText = 'Wyświetl zdobyte bramki przez zawodników';
+            button2.onclick = function () {
+                hideAllTables();
+                const table = document.getElementById('zawodnicyTableBramki');
+                table.style.display = 'table';
+            };
+
+            const button3 = document.createElement('button');
+            button3.className = 'button';
+            button3.innerText = 'Wyświetl zawodników od najstarszego do najmłodszego';
+            button3.onclick = function () {
+                hideAllTables();
+                const table = document.getElementById('zawodnicyTableWiek');
+                table.style.display = 'table';
+            };
+
+            container.appendChild(button1);
+            container.appendChild(button2);
+            container.appendChild(button3);
         });
+
+        document.getElementById('mecze').addEventListener('click', function () {
+            clearButtons();
+            const container = document.getElementById('buttonsContainer');
+
+            const button1 = document.createElement('button');
+            button1.className = 'button';
+            button1.innerText = 'Wyświetl mecze';
+
+            const button2 = document.createElement('button');
+            button2.className = 'button';
+            button2.innerText = 'Wyświetl wyniki meczów';
+
+            const button3 = document.createElement('button');
+            button3.className = 'button';
+            button3.innerText = 'Wyświetl szczegóły meczów';
+
+            container.appendChild(button1);
+            container.appendChild(button2);
+            container.appendChild(button3);
+        });
+    </script>
     </script>
 </body>
 </html>
