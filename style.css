@@ -36,3 +36,112 @@ body{
     width: 75em;
     position: relative
 }
+table {
+    width: 70%;
+    border-collapse: collapse;
+    margin: 20px auto;
+}
+th, td {
+    border: 1px solid black;
+    padding: 10px;
+    text-align: center;
+}
+th {
+    background-color: #f4f4f4;
+}
+.clickable {
+    cursor: pointer;
+    margin: 10px 0;
+}
+.buttons-container {
+    margin: 20px;
+}
+.button {
+    padding: 10px 20px;
+    margin: 5px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.button:hover {
+    background-color: #0056b3;
+}
+
+#zawodnicyTable, #zawodnicyTableWiek, #zawodnicyTableBramki {
+    display: none; /* Ukryj tabele domyślnie */
+    margin: 20px auto;
+    border-collapse: collapse;
+    width: 80%;
+}
+#zawodnicyTable th, #zawodnicyTable td,
+#zawodnicyTableWiek th, #zawodnicyTableWiek td,
+#zawodnicyTableBramki th, #zawodnicyTableBramki td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+#zawodnicyTable th, #zawodnicyTableWiek th, #zawodnicyTableBramki th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}  #trenerzyTable, #trenerzyTableSpecjalizacje, #trenerzyTableDataZatrudnienia {
+    display: none; /* Ukryj tabele domyślnie */
+    margin: 20px auto;
+    border-collapse: collapse;
+    width: 80%;
+}
+#trenerzyTable th, #trenerzyTable td,
+#trenerzyTableSpecjalizacje th, #trenerzyTableSpecjalizacje td,
+#trenerzyTableDataZatrudnienia th, #trenerzyTableDataZatrudnienia td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+#trenerzyTable th, #trenerzyTableSpecjalizacje th, #trenerzyTableDataZatrudnienia th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+.calendar {
+    max-width: 600px;
+    margin: 20px auto;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.calendar table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.calendar th, .calendar td {
+    text-align: center;
+    padding: 10px;
+    border: 1px solid #ddd;
+    height: 50px;
+}
+
+.calendar td.empty {
+    background-color: #f4f4f4;
+}
+
+.calendar td.green {
+    background-color: #c8e6c9;
+    color: #2e7d32;
+}
+
+.calendar td.orange {
+    background-color: #ffe0b2;
+    color: #ef6c00;
+}
+
+.calendar td.red {
+    background-color: #ffcdd2;
+    color: #c62828;
+}
+
+.calendar form {
+    text-align: center;
+    margin: 20px 0;
+}
